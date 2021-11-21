@@ -1,16 +1,30 @@
 radio.onReceivedString(function (receivedString) {
     if (receivedString == "A") {
-    	
+        robotbit.Servo(robotbit.Servos.S1, 0)
+        robotbit.Servo(robotbit.Servos.S2, 180)
     } else if (receivedString == "B") {
-    	
+        robotbit.Servo(robotbit.Servos.S1, 180)
+        robotbit.Servo(robotbit.Servos.S2, 0)
     } else if (receivedString == "C") {
-    	
+        if (laser_tilt >= 70) {
+            laser_tilt = laser_tilt - angle_increment
+            robotbit.Servo(robotbit.Servos.S1, laser_tilt)
+        }
     } else if (receivedString == "D") {
-    	
+        if (laser_pan >= 70) {
+            laser_pan = laser_pan - angle_increment
+            robotbit.Servo(robotbit.Servos.S2, laser_pan)
+        }
     } else if (receivedString == "E") {
-    	
+        if (laser_tilt <= 120) {
+            laser_tilt = laser_tilt + angle_increment
+            robotbit.Servo(robotbit.Servos.S1, laser_tilt)
+        }
     } else if (receivedString == "F") {
-    	
+        if (laser_pan <= 120) {
+            laser_pan = laser_pan + angle_increment
+            robotbit.Servo(robotbit.Servos.S2, laser_pan)
+        }
     } else if (receivedString == "a") {
         robotbit.MotorRun(robotbit.Motors.M2A, s22)
         robotbit.MotorRun(robotbit.Motors.M1B, s42)
@@ -91,14 +105,17 @@ radio.onReceivedString(function (receivedString) {
         robotbit.MotorRun(robotbit.Motors.M2A, 0)
     }
 })
-let s0 = 0
+let laser_pan = 0
+let laser_tilt = 0
+let angle_increment = 0
 let s42 = 0
-let s4 = 0
 let s32 = 0
-let s3 = 0
 let s22 = 0
-let s2 = 0
 let s12 = 0
+let s0 = 0
+let s4 = 0
+let s3 = 0
+let s2 = 0
 let s1 = 0
 radio.setGroup(1)
 robotbit.MotorRunDual(
@@ -107,15 +124,48 @@ robotbit.Motors.M1B,
 robotbit.Motors.M2A,
 0
 )
-s1 = 0 - s12
-s2 = 0 - s22
-s3 = 0 - s32
-s4 = 0 - s42
+s1 = -100
+s2 = -150
+s3 = -200
+s4 = -255
 s0 = 0
 s12 = 100
 s22 = 150
 s32 = 200
 s42 = 255
+angle_increment = 5
+robotbit.Servo(robotbit.Servos.S1, 120)
+robotbit.Servo(robotbit.Servos.S2, 120)
+basic.showLeds(`
+    . . . . .
+    . . . . .
+    . . # . .
+    . . . . .
+    . . . . .
+    `)
+basic.showLeds(`
+    . . . . .
+    . # . # .
+    . . . . .
+    . # . # .
+    . . . . .
+    `)
+basic.showLeds(`
+    # . . . #
+    . . . . .
+    . . . . .
+    . . . . .
+    # . . . #
+    `)
+basic.showLeds(`
+    . . . . .
+    . . . . .
+    . . . . .
+    . . . . .
+    . . . . .
+    `)
+robotbit.Servo(robotbit.Servos.S1, 90)
+robotbit.Servo(robotbit.Servos.S2, 90)
 basic.forever(function () {
 	
 })
