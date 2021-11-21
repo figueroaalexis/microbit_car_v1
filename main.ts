@@ -1,13 +1,27 @@
 radio.onReceivedString(function (receivedString) {
     if (receivedString == "A") {
-        robotbit.Servo(robotbit.Servos.S1, 0)
-        robotbit.Servo(robotbit.Servos.S2, 180)
+        if (light2 == 1) {
+            pins.digitalWritePin(DigitalPin.P1, 0)
+            light2 = 0
+        } else {
+            pins.digitalWritePin(DigitalPin.P1, 1)
+            light2 = 1
+        }
     } else if (receivedString == "B") {
-        robotbit.Servo(robotbit.Servos.S1, 180)
-        robotbit.Servo(robotbit.Servos.S2, 0)
+        for (let index = 0; index < 8; index++) {
+            if (laser == 1) {
+                pins.digitalWritePin(DigitalPin.P2, 0)
+                laser = 0
+            } else {
+                pins.digitalWritePin(DigitalPin.P2, 1)
+                laser = 1
+            }
+            music.playTone(262, music.beat(BeatFraction.Sixteenth))
+            basic.pause(50)
+        }
     } else if (receivedString == "C") {
-        if (laser_tilt >= 70) {
-            laser_tilt = laser_tilt - angle_increment
+        if (laser_tilt <= 120) {
+            laser_tilt = laser_tilt + angle_increment
             robotbit.Servo(robotbit.Servos.S1, laser_tilt)
         }
     } else if (receivedString == "D") {
@@ -16,8 +30,8 @@ radio.onReceivedString(function (receivedString) {
             robotbit.Servo(robotbit.Servos.S2, laser_pan)
         }
     } else if (receivedString == "E") {
-        if (laser_tilt <= 120) {
-            laser_tilt = laser_tilt + angle_increment
+        if (laser_tilt >= 70) {
+            laser_tilt = laser_tilt - angle_increment
             robotbit.Servo(robotbit.Servos.S1, laser_tilt)
         }
     } else if (receivedString == "F") {
@@ -117,6 +131,12 @@ let s4 = 0
 let s3 = 0
 let s2 = 0
 let s1 = 0
+let laser = 0
+let light2 = 0
+pins.digitalWritePin(DigitalPin.P1, 0)
+pins.digitalWritePin(DigitalPin.P2, 0)
+light2 = 0
+laser = 0
 radio.setGroup(1)
 robotbit.MotorRunDual(
 robotbit.Motors.M1B,
@@ -133,7 +153,8 @@ s12 = 100
 s22 = 150
 s32 = 200
 s42 = 255
-angle_increment = 5
+angle_increment = 2
+music.setVolume(127)
 robotbit.Servo(robotbit.Servos.S1, 120)
 robotbit.Servo(robotbit.Servos.S2, 120)
 basic.showLeds(`
