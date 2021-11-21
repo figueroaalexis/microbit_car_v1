@@ -8,7 +8,7 @@ radio.onReceivedString(function (receivedString) {
             light2 = 1
         }
     } else if (receivedString == "B") {
-        for (let index = 0; index < 8; index++) {
+        for (let index = 0; index < 4; index++) {
             if (laser == 1) {
                 pins.digitalWritePin(DigitalPin.P2, 0)
                 laser = 0
@@ -16,26 +16,26 @@ radio.onReceivedString(function (receivedString) {
                 pins.digitalWritePin(DigitalPin.P2, 1)
                 laser = 1
             }
-            music.playTone(262, music.beat(BeatFraction.Sixteenth))
+            music.playTone(131, music.beat(BeatFraction.Sixteenth))
             basic.pause(50)
         }
     } else if (receivedString == "C") {
-        if (laser_tilt <= 120) {
+        if (laser_tilt < 180) {
             laser_tilt = laser_tilt + angle_increment
             robotbit.Servo(robotbit.Servos.S1, laser_tilt)
         }
     } else if (receivedString == "D") {
-        if (laser_pan >= 70) {
+        if (laser_pan > 0) {
             laser_pan = laser_pan - angle_increment
             robotbit.Servo(robotbit.Servos.S2, laser_pan)
         }
     } else if (receivedString == "E") {
-        if (laser_tilt >= 70) {
+        if (laser_tilt > 0) {
             laser_tilt = laser_tilt - angle_increment
             robotbit.Servo(robotbit.Servos.S1, laser_tilt)
         }
     } else if (receivedString == "F") {
-        if (laser_pan <= 120) {
+        if (laser_pan < 180) {
             laser_pan = laser_pan + angle_increment
             robotbit.Servo(robotbit.Servos.S2, laser_pan)
         }
@@ -153,10 +153,8 @@ s12 = 100
 s22 = 150
 s32 = 200
 s42 = 255
-angle_increment = 2
-music.setVolume(127)
-robotbit.Servo(robotbit.Servos.S1, 120)
-robotbit.Servo(robotbit.Servos.S2, 120)
+angle_increment = 5
+music.setVolume(206)
 basic.showLeds(`
     . . . . .
     . . . . .
@@ -185,8 +183,6 @@ basic.showLeds(`
     . . . . .
     . . . . .
     `)
-robotbit.Servo(robotbit.Servos.S1, 90)
-robotbit.Servo(robotbit.Servos.S2, 90)
 basic.forever(function () {
 	
 })
